@@ -31,7 +31,7 @@ class AssetServer < EventMachine::Connection
 
     # once download is complete, send it to client
     http.callback do |r|
-      p [:callback, r.inspect]
+      #p [:callback, r.inspect]
       resp.status  = r[:status]
       resp.content = r[:content]
       resp.send_response
