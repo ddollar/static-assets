@@ -10,13 +10,19 @@ class AssetServer < EventMachine::Connection
   def process_http_request
     p [:incoming_path, @http_path_info]
     _, app, timestamp, path = @http_path_info.split("/", 4)
-    return unless app && timestamp && path
+
+    resp = EventMachine::DelegatedHttpResponse.new(self)
+
+    unless app && timestamp && path
+      resp.status = 404
+      resp.content = "Not Found"
+      resp.send_reponse
+      return
+    end
 
     p [:app, app]
     p [:timestamp, timestamp]
     p [:path, path]
-
-    resp = EventMachine::DelegatedHttpResponse.new(self)
 
     # query our threaded server (max concurrency: 20)
     http = EM::Protocols::HttpClient.request(
