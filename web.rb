@@ -8,8 +8,7 @@ class AssetServer < EventMachine::Connection
   include EventMachine::HttpServer
 
   def process_http_request
-    puts "PATH: #{@http_path_info}"
-
+    p [:incoming_path, @http_path_info]
     _, app, timestamp, path = @http_path_info.split("/", 4)
     return unless app && timestamp && path
 
@@ -36,7 +35,7 @@ class AssetServer < EventMachine::Connection
       resp.status  = r[:status]
       resp.content = r[:content]
       resp.send_response
-    end 
+    end
   end
 end
 
