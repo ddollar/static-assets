@@ -16,7 +16,7 @@ class AssetServer < EventMachine::Connection
     unless app && timestamp && path
       resp.status = 404
       resp.content = "Not Found"
-      resp.send_reponse
+      resp.send_response
       return
     end
 
